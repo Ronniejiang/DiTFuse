@@ -115,12 +115,15 @@ body {
 
 /* Publication Content Styling */
 .publication-title {
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 800 !important;
-    color: var(--text-primary) !important;
-    margin-bottom: 2rem !important;
-    line-height: 1.1 !important;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-style: italic;          /* 斜体 */
+  font-weight: 800;            /* 保持现在这种粗度 */
+  color: #ffffff !important;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.45);
+  line-height: 1.38;
 }
+
+
 
 .publication-banner {
   max-height: 70vh;
@@ -144,6 +147,9 @@ body {
 .publication-header .hero-body {
   padding: 6rem 1.5rem 4rem;
 }
+
+
+
 
 .publication-authors {
     font-family: 'Inter', sans-serif !important;
@@ -617,7 +623,8 @@ code {
   .publication-authors {
     font-size: 1rem !important;
   }
-  
+
+
   .button {
     margin: 0.25rem !important;
     font-size: 0.875rem !important;
@@ -749,5 +756,656 @@ a:focus {
   }
 }
 
+/* 主 hero 样式：全屏 + 叠加背景 */
+.hero-main {
+  position: relative;
+  min-height: 100vh;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+/* 背景图层 */
+.hero-main .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* 每一行图片：横向滚动 */
+.hero-main .bg-row {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+  opacity: 0.4;            /* 背景不要太抢眼 */
+  animation: scroll-left 60s linear infinite;
+}
+
+/* 上下四行均匀分布 */
+.hero-main .row1 { margin-top: 5vh;  }
+.hero-main .row2 { margin-top: 0;    }
+.hero-main .row3 { margin-top: 0;    }
+.hero-main .row4 { margin-top: 0;    }
+
+/* 偶数行反方向滚动，感觉更“流动” */
+.hero-main .row2,
+.hero-main .row4 {
+  animation-name: scroll-right;
+}
+
+/* 背景图片样式 */
+.hero-main .bg-row img {
+  height: 22vh;            /* 控制每行高度，可按需求调 */
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* 前景：标题/作者/按钮 置于最上层 */
+.hero-main .hero-body {
+  position: relative;
+  z-index: 2;
+}
+
+/* 在背景上加一层渐变遮罩，让字更清晰
+.hero-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.85));
+} */
+
+.hero-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* 蓝调渐变蒙版，让背景偏冷一点 */
+  background: linear-gradient(
+    to bottom,
+    rgba(196, 206, 253, 0.4),
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+/* 让标题更像 landing page */
+.hero-main .publication-title {
+  color: #ffffff;
+}
+
+/* 滚动动画 */
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* 图片组长度建议 > 200% 宽度，保证循环自然 */
+}
+
+@keyframes scroll-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
 
 
+/* 让每行看起来像一排卡片 */
+.hero-main .bg-row img {
+  height: 22vh;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* 第一行：最近的一层，稍微大一点、抬一点 */
+.hero-main .row1 img {
+  transform: translateY(-10px) scale(1.05);
+  filter: brightness(1.05);
+  z-index: 4;
+}
+
+/* 第二行：略远一些，基本不动 */
+.hero-main .row2 img {
+  transform: translateY(0) scale(1.0);
+  opacity: 0.9;
+  z-index: 3;
+}
+
+/* 第三行：再远一点，稍微下移 + 轻微模糊 */
+.hero-main .row3 img {
+  transform: translateY(8px) scale(0.98);
+  opacity: 0.8;
+  filter: blur(0.3px) brightness(0.95);
+  z-index: 2;
+}
+
+/* 第四行：最远的一层，再往下 + 再小一点 */
+.hero-main .row4 img {
+  transform: translateY(16px) scale(0.95);
+  opacity: 0.75;
+  filter: blur(0.6px) brightness(0.9);
+  z-index: 1;
+}
+
+
+/* 白色标题 + 宽度加大 + 更易读的字体间距 */
+.publication-title {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-style: italic;
+
+  /* 字重改轻 + 字号放大 */
+  font-weight: 600;              /* 适合 Georgia 的最佳粗度 */
+  font-size: 3.2rem;             /* 比 Bulma 的 is-1 更大 */
+  
+  /* 视觉优化 */
+  letter-spacing: 0.5px;         /* 微调字间距，更高级 */
+  line-height: 1.15;             /* 高级海报风排版 */
+
+  /* 颜色 + 阴影保证可读性 */
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+
+/* 让标题整体更宽，但仍保持居中 */
+.wide-title {
+  max-width: 100%;                  /* 默认 100%，这里收一点更像 landing page */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 更大屏幕时标题更宽、行长更舒适 */
+@media (min-width: 1024px) {
+  .wide-title {
+    max-width: 85%;                /* 大屏保持更专业的视觉效果 */
+  }
+}
+
+/* 超大屏幕 */
+@media (min-width: 1440px) {
+  .wide-title {
+    max-width: 75%;
+  }
+}
+
+
+/* 扩宽标题整体区域，让它脱离 960px 限制 */
+.hero-wide-container {
+  max-width: 4096px !important;   /* 你可以改成 1500, 1600, 1800 */
+  width: 100%;
+}
+
+/* 具体标题行宽度 */
+.wide-title {
+  max-width: 70%;                  /* 比原来更宽 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 大屏幕更宽 */
+@media (min-width: 1440px) {
+  .wide-title {
+    max-width: 60%;
+  }
+}
+
+/* 超大屏幕 */
+@media (min-width: 1800px) {
+  .wide-title {
+    max-width: 50%;
+  }
+}
+
+/* 终极强制覆盖作者颜色 */
+.publication-authors .author-block a,
+.publication-authors .author-block a:visited,
+.publication-authors .author-block a:hover,
+.publication-authors a,
+.publication-authors a:visited,
+.publication-authors a:hover {
+  color: rgb(107, 87, 255) !important;    /* 默认颜色 */
+}
+
+/* Hover 状态更亮 */
+.publication-authors .author-block a:hover,
+.publication-authors a:hover {
+  color: #bcfee7 !important;
+  text-decoration: underline;
+}
+
+/* 让整个标题 + 作者 + 机构 + 按钮的 “整体” 居中 */
+.hero-content-center {
+  width: 100%;
+  max-width: 1500px;       /* 可调整：控制最大居中宽度 */
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 水平居中 */
+  justify-content: center;  /* 垂直方向在 hero 内自然居中 */
+  text-align: center;
+
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+
+/* 让整块 hero 内容在屏幕中垂直 + 水平居中 */
+.hero-main.is-fullheight .hero-body {
+  display: flex;
+  align-items: center;      /* 垂直方向居中 */
+  justify-content: center;  /* 水平方向居中（配合 container） */
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* 控制内容块本身的宽度和对齐 */
+.hero-wide-container {
+  max-width: 1500px;
+  width: 100%;
+}
+
+.hero-content-center {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 水平居中 */
+  text-align: center;       /* 文本居中 */
+}
+
+
+/* 整个 teaser 区域：竖直排布、居中 */
+.teaser-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* teaser 图片：放大 + 居中 + 圆角阴影 */
+.teaser-image {
+  width: 100%;
+  max-width: 1100px;                 /* 控制最大宽度，按需调大/调小 */
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+  display: block;
+}
+
+/* caption 文本样式 */
+.teaser-caption {
+  margin-top: 1.5rem;
+  max-width: 1100px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #4e4e4e;
+  font-style: italic;
+}
+
+/* Abstract 文本样式：深色字配浅背景 */
+.abstract-text {
+  color: #111827 !important;      /* 深灰接近黑，对比度够高 */
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+/* Abstract 里要强调的关键字 */
+.abstract-text strong {
+  font-weight: 700;
+  color: #000000;      /* 或者用 #111827；总之比普通文字略深一点 */
+}
+
+/* ==== Contributions section ==== */
+
+.contributions-section {
+  background: rgba(15, 23, 42, 0.04);        /* 很浅的一层，让区块略微分开 */
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.contribution-card {
+  background: rgba(20, 30, 53, 0.85);        /* 深色卡片，和你的主视觉统一 */
+  border-radius: 14px;
+  padding: 1.75rem 1.6rem 1.6rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contribution-icon {
+  margin-bottom: 0.9rem;
+}
+
+.contribution-icon .icon i {
+  font-size: 1.6rem;
+  color: #93c5fd;                            /* 柔和的浅蓝图标 */
+}
+
+.contribution-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f9fafb;
+  margin-bottom: 0.55rem;
+}
+
+.contribution-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e5e7eb;
+}
+
+/* 小屏时一列一张卡片，大屏三列 */
+@media (max-width: 1023px) {
+  .contributions-section .column {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ==== Training & Data Pipeline Section ==== */
+
+.pipeline-section {
+  background: rgba(15, 23, 42, 0.04);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* 按钮区域 */
+.pipeline-toggle {
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.pipeline-btn {
+  margin: 0 0.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.8);
+  color: #e5e7eb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.45);
+  font-size: 0.9rem;
+}
+
+.pipeline-btn .icon {
+  margin-right: 0.15rem;
+}
+
+.pipeline-btn.is-active {
+  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+  border-color: transparent;
+  color: #f9fafb;
+}
+
+/* 主卡片 */
+.pipeline-card {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 16px;
+  padding: 1.6rem 1.5rem 1.4rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
+}
+
+/* ==== Training & Data Pipeline Section ==== */
+
+.pipeline-section {
+  background: rgba(67, 80, 110, 0.04);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 3;               /* 确保在任何背景蒙版之上 */
+}
+
+/* 按钮区域 */
+
+.pipeline-toggle {
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.pipeline-btn {
+  margin: 0 0.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.8);
+  color: #e5e7eb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.45);
+  font-size: 0.9rem;
+}
+
+.pipeline-btn .icon {
+  margin-right: 0.15rem;
+}
+
+.pipeline-btn.is-active {
+  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+  border-color: transparent;
+  color: #f9fafb;
+}
+
+/* 主卡片 */
+
+.pipeline-card {
+  background: rgba(77, 94, 133, 0.901);
+  border-radius: 16px;
+  padding: 1.6rem 1.5rem 1.4rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
+}
+
+/* 图片面板：关键的显示/隐藏逻辑 */
+
+.pipeline-panel {
+  display: none;
+}
+
+.pipeline-panel.is-active {
+  display: block;
+}
+
+/* 图片 */
+
+.pipeline-image {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  margin-bottom: 0.9rem;
+}
+
+/* 图注 */
+
+.pipeline-caption {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e5e7eb;
+}
+
+.pipeline-caption strong {
+  color: #f9fafb;
+  font-weight: 700;
+}
+
+.pipeline-caption em {
+  font-style: italic;
+  color: #c7d2fe;
+}
+
+.pipeline-btn .icon {
+  margin: 0 0.25rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* ==== Quantitative section overall ==== */
+/* ===== Quantitative section 整体背景（整块区域） ===== */
+.quantitative-section {
+  background: #f8fafc;                 /* 极浅灰，类似 Google 风格 */
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* 标题：深蓝黑，清晰 */
+.quantitative-title {
+  color: #0f172a !important;           /* 很深的蓝黑 */
+  margin-bottom: 1.1rem;
+}
+
+/* 简要说明文字：中灰色 */
+.quantitative-intro {
+  max-width: 900px;
+  margin: 0 auto 2.0rem;
+  text-align: center;
+  color: #4b5563 !important;           /* 中灰 */
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+/* ===== 每张表格的“卡片”容器 ===== */
+.table-container.quantitative-card {
+  background: #ffffff;                 /* 纯白卡片 */
+  border-radius: 16px;
+  padding: 1.35rem 1.5rem 1.4rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); /* 轻柔阴影 */
+  margin-bottom: 1.8rem;
+  overflow-x: auto;                    /* 这里负责横向滚动 */
+}
+
+/* caption（Table I. ...） */
+.quant-table-caption {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #111827;                      /* 接近黑色，清晰 */
+}
+
+.quant-table-caption strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* 外层卡片：负责样式，不负责滚动 */
+.table-container.quantitative-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.35rem 1.5rem 1.4rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  margin-bottom: 1.8rem;
+  overflow-x: visible;          /* ⭐ 不要在这里滚动 */
+}
+
+/* 内层这一层负责横向滚动 */
+.quant-table-scroll {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* 表格宽度由内容决定，超出就能滚动 */
+.table.quantitative-table {
+  width: max-content !important;   /* 关键：不要被限制成 100% */
+  min-width: 1100px !important;               /* 根据你列数可以再调大 */
+  border-collapse: collapse !important;
+}
+
+/* 防止表头和数字自动换行导致“挤”进去 */
+.table.quantitative-table th,
+.table.quantitative-table td {
+  white-space: nowrap !important;
+}
+
+
+/* 自定义滚动条（可选，但更好看） */
+.quant-table-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.quant-table-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+.quant-table-scroll::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 999px;
+}
+
+/* ===== 表格主体 ===== */
+.table.quantitative-table {
+  width: max-content !important;       /* 宽度由内容决定，超出就能滚动 */
+  min-width: 100%;
+  border-collapse: collapse;
+  color: #111827;                      /* 深色文字 */
+  font-size: 0.9rem;
+}
+
+/* 表头单元格 */
+.quantitative-table thead th {
+  background: #eef2ff;                 /* 很浅的蓝色 */
+  color: #1e293b !important;           /* 深蓝灰，清晰 */
+  font-weight: 600 !important;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid #cbd5f5;
+  white-space: nowrap;                 /* 防止换行太丑 */
+}
+
+/* 表体单元格 */
+.quantitative-table tbody td {
+  padding: 0.55rem 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+/* 斑马线背景：白 + 很浅灰 */
+.quantitative-table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+.quantitative-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* 第一列 Method 永远左对齐 */
+.quantitative-table th:first-child,
+.quantitative-table td:first-child {
+  text-align: left !important;
+}
+
+/* 其他所有列：居中 */
+.quantitative-table th:not(:first-child),
+.quantitative-table td:not(:first-child) {
+  text-align: center !important;
+}
+
+/* 我们的方法 DiTFuse 高亮：金色文字 */
+.quantitative-table .method-ours {
+  color: #b45309 !important;           /* 深金色 */
+  font-weight: 700;
+}
+
+/* 最佳指标：金色加粗 */
+.quantitative-table td.best {
+  font-weight: 700;
+  color: #d97706 !important;           /* 亮金色 */
+}
+
+/* 次佳指标：蓝色下划线 */
+.quantitative-table td.second-best {
+  color: #1d4ed8 !important;           /* 蓝色 */
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* 小屏幕时，略微缩小字体防止溢出太夸张 */
+@media (max-width: 768px) {
+  .table.quantitative-table {
+    font-size: 0.8rem;
+  }
+}
+
+
+
+/* 统一所有 section 里的大标题颜色 */
+section h2.title,
+section .title.is-3 {
+  color: #2c4d6d !important;  /* 统一：亮白色 */
+}
