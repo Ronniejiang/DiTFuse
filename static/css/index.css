@@ -828,6 +828,7 @@ a:focus {
     rgba(196, 206, 253, 0.4),
     rgba(255, 255, 255, 0.3)
   );
+  pointer-events: none;
 }
 
 /* 让标题更像 landing page */
