@@ -756,7 +756,8 @@ a:focus {
   }
 }
 
-/* 主 hero 样式：全屏 + 叠加背景 */
+/* ========== HERO 主体：全屏 + 叠加背景 ========== */
+
 .hero-main {
   position: relative;
   min-height: 100vh;
@@ -764,107 +765,61 @@ a:focus {
   overflow: hidden;
 }
 
-/* 背景图层 */
+/* 背景图层：占满整屏，高度由 100vh 决定 */
 .hero-main .hero-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;   /* ⭐ 四行在竖直方向平均分布 */
+  padding: 4vh 0;                  /* 上下各留一点边缘 */
+  pointer-events: none;            /* 不挡前景的鼠标操作 */
 }
 
 /* 每一行图片：横向滚动 */
 .hero-main .bg-row {
   display: flex;
-  gap: 8px;
-  padding: 8px 0;
-  opacity: 0.4;            /* 背景不要太抢眼 */
+  gap: 10px;
+  opacity: 0.4;                    /* 背景不要太抢眼 */
   animation: scroll-left 60s linear infinite;
 }
 
-/* 上下四行均匀分布 */
-.hero-main .row1 { margin-top: 5vh;  }
-.hero-main .row2 { margin-top: 0;    }
-.hero-main .row3 { margin-top: 0;    }
-.hero-main .row4 { margin-top: 0;    }
-
-/* 偶数行反方向滚动，感觉更“流动” */
+/* 偶数行反方向滚动 */
 .hero-main .row2,
 .hero-main .row4 {
   animation-name: scroll-right;
 }
 
+/* ⭐ 不再用 margin-top 来控制高度，否则高屏/矮屏会乱 */
+.hero-main .row1,
+.hero-main .row2,
+.hero-main .row3,
+.hero-main .row4 {
+  margin-top: 0;
+}
+
 /* 背景图片样式 */
 .hero-main .bg-row img {
-  height: 22vh;            /* 控制每行高度，可按需求调 */
-  flex-shrink: 0;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-/* 前景：标题/作者/按钮 置于最上层 */
-.hero-main .hero-body {
-  position: relative;
-  z-index: 2;
-}
-
-/* 在背景上加一层渐变遮罩，让字更清晰
-.hero-main::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.85));
-} */
-
-.hero-main::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  /* 蓝调渐变蒙版，让背景偏冷一点 */
-  background: linear-gradient(
-    to bottom,
-    rgba(196, 206, 253, 0.4),
-    rgba(255, 255, 255, 0.3)
-  );
-  pointer-events: none;
-}
-
-/* 让标题更像 landing page */
-.hero-main .publication-title {
-  color: #ffffff;
-}
-
-/* 滚动动画 */
-@keyframes scroll-left {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* 图片组长度建议 > 200% 宽度，保证循环自然 */
-}
-
-@keyframes scroll-right {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-
-
-/* 让每行看起来像一排卡片 */
-.hero-main .bg-row img {
-  height: 22vh;
+  height: 20vh;                    /* 4 行 × 20vh = 80vh，留出上下和层次挪动空间 */
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.35);
 }
 
+/* ========= 立体感：用 translateY + scale 做轻微错层 ========= */
+
 /* 第一行：最近的一层，稍微大一点、抬一点 */
 .hero-main .row1 img {
-  transform: translateY(-10px) scale(1.05);
+  transform: translateY(-8px) scale(1.04);
   filter: brightness(1.05);
   z-index: 4;
 }
 
-/* 第二行：略远一些，基本不动 */
+/* 第二行：略远一些 */
 .hero-main .row2 img {
   transform: translateY(0) scale(1.0);
   opacity: 0.9;
@@ -887,120 +842,31 @@ a:focus {
   z-index: 1;
 }
 
-
-/* 白色标题 + 宽度加大 + 更易读的字体间距 */
-.publication-title {
-  font-family: "Georgia", "Times New Roman", serif;
-  font-style: italic;
-
-  /* 字重改轻 + 字号放大 */
-  font-weight: 600;              /* 适合 Georgia 的最佳粗度 */
-  font-size: 3.2rem;             /* 比 Bulma 的 is-1 更大 */
-  
-  /* 视觉优化 */
-  letter-spacing: 0.5px;         /* 微调字间距，更高级 */
-  line-height: 1.15;             /* 高级海报风排版 */
-
-  /* 颜色 + 阴影保证可读性 */
-  color: #ffffff !important;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+/* 滚动动画 */
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }   /* 建议每行图片总宽 > 200%，循环更顺滑 */
 }
 
-
-/* 让标题整体更宽，但仍保持居中 */
-.wide-title {
-  max-width: 100%;                  /* 默认 100%，这里收一点更像 landing page */
-  margin-left: auto;
-  margin-right: auto;
+@keyframes scroll-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
-/* 更大屏幕时标题更宽、行长更舒适 */
-@media (min-width: 1024px) {
-  .wide-title {
-    max-width: 85%;                /* 大屏保持更专业的视觉效果 */
-  }
-}
+/* ========== 前景：标题 / 作者 / 按钮 居中对齐 ========== */
 
-/* 超大屏幕 */
-@media (min-width: 1440px) {
-  .wide-title {
-    max-width: 75%;
-  }
-}
+/* 整块 hero 内容在屏幕中垂直 + 水平居中 */
+.hero-main .hero-body {
+  position: relative;
+  z-index: 2;
 
-
-/* 扩宽标题整体区域，让它脱离 960px 限制 */
-.hero-wide-container {
-  max-width: 4096px !important;   /* 你可以改成 1500, 1600, 1800 */
-  width: 100%;
-}
-
-/* 具体标题行宽度 */
-.wide-title {
-  max-width: 70%;                  /* 比原来更宽 */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* 大屏幕更宽 */
-@media (min-width: 1440px) {
-  .wide-title {
-    max-width: 60%;
-  }
-}
-
-/* 超大屏幕 */
-@media (min-width: 1800px) {
-  .wide-title {
-    max-width: 50%;
-  }
-}
-
-/* 终极强制覆盖作者颜色 */
-.publication-authors .author-block a,
-.publication-authors .author-block a:visited,
-.publication-authors .author-block a:hover,
-.publication-authors a,
-.publication-authors a:visited,
-.publication-authors a:hover {
-  color: rgb(107, 87, 255) !important;    /* 默认颜色 */
-}
-
-/* Hover 状态更亮 */
-.publication-authors .author-block a:hover,
-.publication-authors a:hover {
-  color: #bcfee7 !important;
-  text-decoration: underline;
-}
-
-/* 让整个标题 + 作者 + 机构 + 按钮的 “整体” 居中 */
-.hero-content-center {
-  width: 100%;
-  max-width: 1500px;       /* 可调整：控制最大居中宽度 */
-  margin-left: auto;
-  margin-right: auto;
-
+  min-height: 100vh;              /* ⭐ 自己就撑满一屏，不依赖别的 section */
   display: flex;
-  flex-direction: column;
-  align-items: center;      /* 水平居中 */
-  justify-content: center;  /* 垂直方向在 hero 内自然居中 */
-  text-align: center;
-
-  padding-left: 1rem;
-  padding-right: 1rem;
+  align-items: center;            /* 垂直居中 */
+  justify-content: center;        /* 水平居中（配合 container） */
+  padding: 2rem 1rem;
 }
 
-
-/* 让整块 hero 内容在屏幕中垂直 + 水平居中 */
-.hero-main.is-fullheight .hero-body {
-  display: flex;
-  align-items: center;      /* 垂直方向居中 */
-  justify-content: center;  /* 水平方向居中（配合 container） */
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
-/* 控制内容块本身的宽度和对齐 */
 .hero-wide-container {
   max-width: 1500px;
   width: 100%;
@@ -1008,11 +874,80 @@ a:focus {
 
 .hero-content-center {
   width: 100%;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+
   display: flex;
   flex-direction: column;
-  align-items: center;      /* 水平居中 */
-  text-align: center;       /* 文本居中 */
+  align-items: center;            /* 水平居中 */
+  text-align: center;             /* 文本居中 */
 }
+
+/* ========== 顶层蓝色蒙版：压在背景上，不挡交互 ========== */
+
+.hero-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;      /* ⭐ 不影响表格滚动 / 按钮点击 */
+
+  background: linear-gradient(
+    to bottom,
+    rgba(196, 206, 253, 0.45),
+    rgba(255, 255, 255, 0.38)
+  );
+}
+
+/* ========== 标题样式：Georgia 斜体 + 稍大 ========== */
+
+.publication-title {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 3.0rem;          /* 你可以按视觉感受再 +0.2 / -0.2 */
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  color: #4c4848 !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.wide-title {
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1440px) {
+  .wide-title {
+    max-width: 60%;
+  }
+}
+@media (min-width: 1800px) {
+  .wide-title {
+    max-width: 50%;
+  }
+}
+
+/* ========== 作者链接颜色（保留你原来的） ========== */
+
+.publication-authors .author-block a,
+.publication-authors .author-block a:visited,
+.publication-authors .author-block a:hover,
+.publication-authors a,
+.publication-authors a:visited,
+.publication-authors a:hover {
+  color: rgb(107, 87, 255) !important;
+}
+
+.publication-authors .author-block a:hover,
+.publication-authors a:hover {
+  color: #bcfee7 !important;
+  text-decoration: underline;
+}
+
+
 
 
 /* 整个 teaser 区域：竖直排布、居中 */
@@ -1394,6 +1329,16 @@ a:focus {
   .table.quantitative-table {
     font-size: 0.8rem;
   }
+}
+
+.affiliation-block {
+  color: #111827 !important;     /* 强制黑色 */
+  font-size: 0.95rem;         /* 可选：更统一的字体 */
+  line-height: 1.5;
+}
+
+.author-block sup {
+  color: #111827 !important;   /* 深灰黑（推荐） */
 }
 
 
