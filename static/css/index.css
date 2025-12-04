@@ -1065,7 +1065,7 @@ a:focus {
 }
 
 .contribution-card {
-  background: rgba(20, 30, 53, 0.85);        /* 深色卡片，和你的主视觉统一 */
+  background: rgba(126, 136, 177, 0.967);        /* 深色卡片，和你的主视觉统一 */
   border-radius: 14px;
   padding: 1.75rem 1.6rem 1.6rem;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
@@ -1185,7 +1185,7 @@ a:focus {
 /* 主卡片 */
 
 .pipeline-card {
-  background: rgba(77, 94, 133, 0.901);
+  background: rgba(135, 146, 192, 0.967);
   border-radius: 16px;
   padding: 1.6rem 1.5rem 1.4rem;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
@@ -1236,55 +1236,32 @@ a:focus {
 
 
 /* ==== Quantitative section overall ==== */
-/* ===== Quantitative section 整体背景（整块区域） ===== */
+/* ===== Section 背景 & 标题 ===== */
+
 .quantitative-section {
-  background: #f8fafc;                 /* 极浅灰，类似 Google 风格 */
+  background: #f8fafc;
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
 
-/* 标题：深蓝黑，清晰 */
 .quantitative-title {
-  color: #0f172a !important;           /* 很深的蓝黑 */
+  color: #0f172a !important;
   margin-bottom: 1.1rem;
 }
 
-/* 简要说明文字：中灰色 */
 .quantitative-intro {
   max-width: 900px;
-  margin: 0 auto 2.0rem;
+  margin: 0 auto 2rem;
   text-align: center;
-  color: #4b5563 !important;           /* 中灰 */
+  color: #4b5563 !important;
   font-size: 1.02rem;
   line-height: 1.7;
 }
 
-/* ===== 每张表格的“卡片”容器 ===== */
-.table-container.quantitative-card {
-  background: #ffffff;                 /* 纯白卡片 */
-  border-radius: 16px;
-  padding: 1.35rem 1.5rem 1.4rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); /* 轻柔阴影 */
-  margin-bottom: 1.8rem;
-  overflow-x: auto;                    /* 这里负责横向滚动 */
-}
+/* ===== 每张表格的“卡片”容器：只负责视觉，不负责滚动 ===== */
 
-/* caption（Table I. ...） */
-.quant-table-caption {
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  color: #111827;                      /* 接近黑色，清晰 */
-}
-
-.quant-table-caption strong {
-  color: #111827;
-  font-weight: 600;
-}
-
-/* 外层卡片：负责样式，不负责滚动 */
 .table-container.quantitative-card {
   background: #ffffff;
   border-radius: 16px;
@@ -1292,31 +1269,31 @@ a:focus {
   border: 1px solid #e5e7eb;
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
   margin-bottom: 1.8rem;
-  overflow-x: visible;          /* ⭐ 不要在这里滚动 */
+  overflow-x: visible;          /* ✅ 不在这里滚动 */
 }
 
-/* 内层这一层负责横向滚动 */
+/* caption（Table I. ...） */
+
+.quant-table-caption {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.quant-table-caption strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* ===== 真正负责横向滚动的这一层 ===== */
+
 .quant-table-scroll {
-  overflow-x: auto !important;
-  overflow-y: visible !important;
-  -webkit-overflow-scrolling: touch !important;
+  overflow-x: auto;             /* ✅ 只在这里开横向滚动 */
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* 表格宽度由内容决定，超出就能滚动 */
-.table.quantitative-table {
-  width: max-content !important;   /* 关键：不要被限制成 100% */
-  min-width: 1100px !important;               /* 根据你列数可以再调大 */
-  border-collapse: collapse !important;
-}
-
-/* 防止表头和数字自动换行导致“挤”进去 */
-.table.quantitative-table th,
-.table.quantitative-table td {
-  white-space: nowrap !important;
-}
-
-
-/* 自定义滚动条（可选，但更好看） */
+/* 自定义滚动条（可选） */
 .quant-table-scroll::-webkit-scrollbar {
   height: 8px;
 }
@@ -1329,33 +1306,45 @@ a:focus {
   border-radius: 999px;
 }
 
-/* ===== 表格主体 ===== */
+/* ===== 表格本体 ===== */
+
+/* ⚠️ 只保留这一份，不要再有第二个 .table.quantitative-table 的定义 */
+
 .table.quantitative-table {
-  width: max-content !important;       /* 宽度由内容决定，超出就能滚动 */
-  min-width: 100%;
+  width: auto;                  /* 让内容决定宽度 */
+  min-width: 100%;              /* 小于容器时撑满容器 */
   border-collapse: collapse;
-  color: #111827;                      /* 深色文字 */
+  color: #111827;
   font-size: 0.9rem;
 }
 
+/* 防止内容换行挤成一团：列太多时自然变宽，从而触发横向滚动 */
+
+.table.quantitative-table th,
+.table.quantitative-table td {
+  white-space: nowrap;
+}
+
 /* 表头单元格 */
+
 .quantitative-table thead th {
-  background: #eef2ff;                 /* 很浅的蓝色 */
-  color: #1e293b !important;           /* 深蓝灰，清晰 */
+  background: #eef2ff;
+  color: #1e293b !important;
   font-weight: 600 !important;
   padding: 0.55rem 0.75rem;
   border-bottom: 1px solid #cbd5f5;
-  white-space: nowrap;                 /* 防止换行太丑 */
 }
 
 /* 表体单元格 */
+
 .quantitative-table tbody td {
   padding: 0.55rem 0.75rem;
   border-top: 1px solid #e5e7eb;
   vertical-align: middle;
 }
 
-/* 斑马线背景：白 + 很浅灰 */
+/* 斑马线背景 */
+
 .quantitative-table tbody tr:nth-child(odd) {
   background: #ffffff;
 }
@@ -1364,43 +1353,48 @@ a:focus {
 }
 
 /* 第一列 Method 永远左对齐 */
+
 .quantitative-table th:first-child,
 .quantitative-table td:first-child {
   text-align: left !important;
 }
 
-/* 其他所有列：居中 */
+/* 其他列居中 */
+
 .quantitative-table th:not(:first-child),
 .quantitative-table td:not(:first-child) {
   text-align: center !important;
 }
 
-/* 我们的方法 DiTFuse 高亮：金色文字 */
+/* DiTFuse 高亮 */
+
 .quantitative-table .method-ours {
-  color: #b45309 !important;           /* 深金色 */
+  color: #b45309 !important;
   font-weight: 700;
 }
 
-/* 最佳指标：金色加粗 */
+/* 最佳 / 次佳 指标 */
+
 .quantitative-table td.best {
   font-weight: 700;
-  color: #d97706 !important;           /* 亮金色 */
+  color: #d97706 !important;
 }
 
-/* 次佳指标：蓝色下划线 */
 .quantitative-table td.second-best {
-  color: #1d4ed8 !important;           /* 蓝色 */
+  color: #1d4ed8 !important;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
 }
 
-/* 小屏幕时，略微缩小字体防止溢出太夸张 */
+/* 小屏幕字体略缩小 */
+
 @media (max-width: 768px) {
   .table.quantitative-table {
     font-size: 0.8rem;
   }
 }
+
 
 
 
