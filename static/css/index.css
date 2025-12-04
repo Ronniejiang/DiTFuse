@@ -801,46 +801,30 @@ a:focus {
   margin-top: 0;
 }
 
-/* 背景图片样式 */
+/* 四行背景不做任何抬高/远离效果，保持整齐一致 */
 .hero-main .bg-row img {
-  height: 20vh;                    /* 4 行 × 20vh = 80vh，留出上下和层次挪动空间 */
+  height: 19vh;              /* 每行高度：你也可以换成 18vh / 20vh */
   flex-shrink: 0;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  opacity: 0.95;             /* 轻微透明保持背景感 */
+  z-index: 2;                /* 全部统一 */
+  transform: none !important;
+  filter: none !important;
 }
 
-/* ========= 立体感：用 translateY + scale 做轻微错层 ========= */
-
-/* 第一行：最近的一层，稍微大一点、抬一点 */
-.hero-main .row1 img {
-  transform: translateY(-8px) scale(1.04);
-  filter: brightness(1.05);
-  z-index: 4;
-}
-
-/* 第二行：略远一些 */
-.hero-main .row2 img {
-  transform: translateY(0) scale(1.0);
-  opacity: 0.9;
-  z-index: 3;
-}
-
-/* 第三行：再远一点，稍微下移 + 轻微模糊 */
-.hero-main .row3 img {
-  transform: translateY(8px) scale(0.98);
-  opacity: 0.8;
-  filter: blur(0.3px) brightness(0.95);
-  z-index: 2;
-}
-
-/* 第四行：最远的一层，再往下 + 再小一点 */
+/* 万一原来的层叠效果残留，彻底覆盖 */
+.hero-main .row1 img,
+.hero-main .row2 img,
+.hero-main .row3 img,
 .hero-main .row4 img {
-  transform: translateY(16px) scale(0.95);
-  opacity: 0.75;
-  filter: blur(0.6px) brightness(0.9);
-  z-index: 1;
+  transform: none !important;
+  opacity: 0.95 !important;
+  filter: none !important;
+  z-index: 2 !important;
 }
+
 
 /* 滚动动画 */
 @keyframes scroll-left {
