@@ -1333,3 +1333,12 @@ section h2.title,
 section .title.is-3 {
   color: #2c4d6d !important;  /* 统一：亮白色 */
 }
+
+/* Buttons container */
+.publication-links-dark {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
